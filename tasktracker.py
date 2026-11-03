@@ -76,6 +76,20 @@ def mark_done(task_id, path=TASKS_FILE):
     return None
 
 
+def remove_task(task_id, path=TASKS_FILE):
+    """Remove the task with ``task_id``.
+
+    Returns the removed task, or ``None`` when no such task exists.
+    """
+    tasks = load_tasks(path)
+    for index, task in enumerate(tasks):
+        if task["id"] == task_id:
+            del tasks[index]
+            save_tasks(tasks, path)
+            return task
+    return None
+
+
 def format_task(task):
     """Format a task as ``<id>\\t<status>\\t<title>``."""
     return "{}\t{}\t{}".format(task["id"], task["status"], task["title"])
@@ -97,6 +111,9 @@ def build_parser():
     done_parser = subparsers.add_parser("done", help="Mark a task as done")
     done_parser.add_argument("id", type=int, help="Id of the task to mark done")
 
+    remove_parser = subparsers.add_parser("remove", help="Remove a task")
+    remove_parser.add_argument("id", type=int, help="Id of the task to remove")
+
     return parser
 
 
@@ -116,6 +133,12 @@ def main(argv=None):
             print("No task with id {}".format(args.id), file=sys.stderr)
             return 1
         print("Done task {}".format(task["id"]))
+    elif args.command == "remove":
+        task = remove_task(args.id)
+        if task is None:
+            print("No task with id {}".format(args.id), file=sys.stderr)
+            return 1
+        print("Removed task {}".format(task["id"]))
     return 0
 
 
