@@ -26,6 +26,9 @@ python3 tasktracker.py list
 # Mark a task as done
 python3 tasktracker.py done 1
 
+# Remove a task
+python3 tasktracker.py remove 1
+
 # Show help
 python3 tasktracker.py --help
 ```

@@ -64,6 +64,24 @@ class TaskTrackerTest(unittest.TestCase):
     def test_done_unknown_id_returns_none(self):
         self.assertIsNone(tasktracker.mark_done(99, path=self.path))
 
+    def test_remove_deletes_task(self):
+        first = tasktracker.add_task("Keep", path=self.path)
+        second = tasktracker.add_task("Delete", path=self.path)
+
+        removed = tasktracker.remove_task(second["id"], path=self.path)
+
+        self.assertIsNotNone(removed)
+        self.assertEqual(removed["id"], second["id"])
+        tasks = tasktracker.list_tasks(path=self.path)
+        self.assertEqual([task["id"] for task in tasks], [first["id"]])
+
+    def test_remove_unknown_id_returns_none(self):
+        tasktracker.add_task("Stay", path=self.path)
+
+        self.assertIsNone(tasktracker.remove_task(99, path=self.path))
+        tasks = tasktracker.list_tasks(path=self.path)
+        self.assertEqual(len(tasks), 1)
+
     def test_format_task(self):
         task = {"id": 3, "title": "Hi", "status": "open", "created": "x"}
         self.assertEqual(tasktracker.format_task(task), "3\topen\tHi")
