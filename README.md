@@ -1,6 +1,13 @@
 # dsh-superagent-test
 Test repository for dsh-superagent
 
+## Purpose
+
+This repository exists to exercise and validate the dsh-superagent tooling. It
+is a sandbox for smoke tests and end-to-end checks of the agent workflow
+(reading issues, making small changes, and opening pull requests), not a
+production project.
+
 ## Task tracker CLI
 
 A small task tracker written with the Python standard library only.
